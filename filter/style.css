@@ -1,0 +1,9 @@
+.filter {
+    display: inline-block;
+}
+.head input:nth-child(2) {
+    margin: 5px;
+}
+select {
+    width: 100%;
+}
