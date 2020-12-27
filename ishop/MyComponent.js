@@ -7,7 +7,7 @@ var ProductListTable = React.createClass({
         var list = this.props.list;
         var productListArr = [];
 
-        this.props.list.forEach( (v, i) => {
+        list.forEach( (v, i) => {
             productListArr.push(
                 React.DOM.tr( {key: v.code, className: 'Product-table__row'},
                     React.DOM.td({className: 'Product-table__img'}, 
