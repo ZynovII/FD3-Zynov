@@ -16,7 +16,7 @@
     border-collapse: collapse;
     text-align: center;
 }
-.List > .Product-table__row {
+.List .Product-table__row {
     border-bottom: 1px solid greenyellow;
 }
 .Product-table__row > td {

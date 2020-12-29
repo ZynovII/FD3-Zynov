@@ -6,6 +6,8 @@ var Product = React.createClass({
         name: React.PropTypes.string,
         quantity: React.PropTypes.number,
         cost: React.PropTypes.number,
+        selectedItem: React.PropTypes.number,
+        cbSelect: React.PropTypes.func,
         cbDelete: React.PropTypes.func,
     },
 
@@ -13,8 +15,15 @@ var Product = React.createClass({
         this.props.cbDelete(this.props.code)
     },
 
+    select: function() {
+        this.props.cbSelect(this.props.code);
+    },
+
     render: function() {
-        return React.DOM.tr( {key: this.props.code, className: 'Product-table__row'},
+        return React.DOM.tr( {key: this.props.code,
+            style: (this.props.selectedItem == this.props.code)
+            ? {background: 'rgba(0,0,200,0.4)'} : null,
+            className: 'Product-table__row', onClick: this.select},
             React.DOM.td({className: 'Product-table__img'}, 
                 React.DOM.img({src: this.props.url})
             ),
