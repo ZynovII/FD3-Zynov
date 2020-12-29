@@ -10,35 +10,38 @@ var FilterComponent = React.createClass({
     getInitialState: function() {
         return {
             enteredValue: '', 
-            stateOptionsArr: this.props.stringArr.slice(),
+            stateOptionsArr: this.props.stringArr,
             isSorted: false,
         }
     },
 
-
-    reset: function() {
-        this.setState( { enteredValue: '', isSorted: false, } )
+    rebuildArr: function() {
+        let rebArr = this.props.stringArr;
+        if(this.state.enteredValue) {
+            rebArr = rebArr.filter(v => v.indexOf(this.state.enteredValue)!=-1)
+        } else {
+            rebArr = rebArr.slice();
+        }
+        if(this.state.isSorted) {
+            rebArr.sort();
+        }
+        this.setState( {stateOptionsArr: rebArr} );
     },
 
-    sort: function() {
-        (!this.state.isSorted)? this.setState( {isSorted: true} ) : this.setState( {isSorted: false} );
+    reset: function() {
+        this.setState( { enteredValue: '', isSorted: false, }, this.rebuildArr)
+    },
+
+    sort: function(EO) {
+        this.setState( {isSorted: EO.target.checked}, this.rebuildArr);
     },
 
     input: function(EO) {
-        this.setState( { enteredValue: EO.target.value} );
-        this.state.stateOptionsArr.forEach((v,i) => {
-            if(!v.includes(EO.target.value)) {
-                this.setState({stateOptionsArr: this.props.stringArr.slice().splice(i)})
-            }
-        })
+        this.setState( { enteredValue: EO.target.value}, this.rebuildArr);
     },
 
     render: function() {
-        var optionsArr = (!this.state.isSorted)
-        ? this.state.stateOptionsArr.map(v=>{
-            return React.DOM.option( {key: v}, v);
-        }) 
-        : this.state.stateOptionsArr.slice().sort().map(v=>{
+        var optionsArr = this.state.stateOptionsArr.map(v=>{
             return React.DOM.option( {key: v}, v);
         });
 
