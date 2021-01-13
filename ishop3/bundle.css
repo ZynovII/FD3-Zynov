@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+}
+.Title {
+    text-align: center;
+    font-size: 50px;
+    color: greenyellow;
+    font-weight: 600;
+    padding: 10px 0;
+}
+.List {
+    margin: 10px auto;
+    box-shadow: 3px 5px 10px gray;
+    border-radius: 10px;
+    border: none;
+    border-collapse: collapse;
+    text-align: center;
+    border-spacing: 0;
+}
+img {
+    height: 100px;
+}
+.ProductListTable{
+    text-align: center;
+}.Product-table__row {
+    border-bottom: 1px solid greenyellow;
+}
+.Product-table__row > td {
+    padding: 3px 10px;
+}.product-card {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    box-shadow: 3px 5px 10px gray;
+    border-radius: 10px;
+    padding: 5px;
+    text-align: left;
+}
+.product-card__title, .product-card__body span {
+    font-weight: 900;
+}.product-card {
+    background-color: rgba(173, 255, 47,.5);
+}
+.product-card__form-article {
+    position: absolute;
+    left: 0;
+}
+.product-card__error {
+    color: red;
+    font-weight: 700;
+}
+.product-card__field {
+    position: relative;
+    padding-left: 70px;
+}
+/*# sourceMappingURL=bundle.css.map*/

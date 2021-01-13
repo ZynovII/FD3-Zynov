@@ -1,0 +1,15 @@
+.product-card {
+    background-color: rgba(173, 255, 47,.5);
+}
+.product-card__form-article {
+    position: absolute;
+    left: 0;
+}
+.product-card__error {
+    color: red;
+    font-weight: 700;
+}
+.product-card__field {
+    position: relative;
+    padding-left: 70px;
+}

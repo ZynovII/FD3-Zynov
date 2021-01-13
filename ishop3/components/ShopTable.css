@@ -1,0 +1,25 @@
+* {
+    margin: 0;
+}
+.Title {
+    text-align: center;
+    font-size: 50px;
+    color: greenyellow;
+    font-weight: 600;
+    padding: 10px 0;
+}
+.List {
+    margin: 10px auto;
+    box-shadow: 3px 5px 10px gray;
+    border-radius: 10px;
+    border: none;
+    border-collapse: collapse;
+    text-align: center;
+    border-spacing: 0;
+}
+img {
+    height: 100px;
+}
+.ProductListTable{
+    text-align: center;
+}
