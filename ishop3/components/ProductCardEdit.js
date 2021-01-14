@@ -5,7 +5,6 @@ import './ProductCardEdit.css';
 
 class ProductCardEdit extends React.Component {
     static propTypes = {
-        newCode: PropTypes.number,
         product: PropTypes.object,
         cardmode: PropTypes.number.isRequired,
         cbSave: PropTypes.func.isRequired,
@@ -21,17 +20,78 @@ class ProductCardEdit extends React.Component {
         errorQuantity: null,
         errorCost: null,
         errorURL: null,
-        isValide: true,
+        isValide: this.props.cardmode == 2 ? true : false,
     };
 
     changeName = (eo) => this.setState({name: eo.target.value});
     changePrice = (eo) => this.setState({cost: eo.target.value});
     changeQuantity = (eo) => this.setState({quantity: eo.target.value});
     changeURL = (eo) => this.setState({url: eo.target.value});
-    
+    validateName = () => {
+        if(this.state.name.length == 0) {
+            this.setState({errorName: 'fill the field', isValide: false});
+        } else {
+            this.setState({errorName: ''})
+        }
+        if(
+            !this.state.errorName,
+            !this.state.errorQuantity,
+            !this.state.errorURL,
+            !this.state.errorCost
+        ) {
+            this.setState({isValide: true});
+        }
+    }
+    validatePrice = () => {
+        if(this.state.cost.length == 0) {
+            this.setState({errorCost: 'fill the field', isValide: false});
+        } else {
+            this.setState({errorCost: ''})
+        }
+        if(
+            !this.state.errorName,
+            !this.state.errorQuantity,
+            !this.state.errorURL,
+            !this.state.errorCost
+        ) {
+            this.setState({isValide: true});
+        }
+    }
+    validateQuantity = () => {
+        if(this.state.quantity.length == 0) {
+            this.setState({errorQuantity: 'fill the field', isValide: false});
+        } else {
+            this.setState({errorQuantity: ''})
+        }
+        if(
+            !this.state.errorName,
+            !this.state.errorQuantity,
+            !this.state.errorURL,
+            !this.state.errorCost
+        ) {
+            this.setState({isValide: true});
+        }
+    }
+    validateURL = () => {
+        if(this.state.url.length == 0) {
+            this.setState({errorURL: 'fill the field', isValide: false});
+        } else {
+            this.setState({errorURL: ''})
+        }
+        if(
+            !this.state.errorName,
+            !this.state.errorQuantity,
+            !this.state.errorURL,
+            !this.state.errorCost
+        ) {
+            this.setState({isValide: true});
+        }
+    }
+
     save = () => this.props.cbSave(
         {
-            ...this.props.product, 
+            ...this.props.product,
+            code: this.state.code, 
             name: this.state.name,
             cost: this.state.cost,
             quantity: this.state.quantity,
@@ -42,32 +102,28 @@ class ProductCardEdit extends React.Component {
     
     validateAllFields = () => {
         let textError = 'fill the field';
-        let a = (field, text=null) => {
-            this.setState({field: text, isValide: false});
-        }
-        (this.state.name.length == 0) ? a(this.state.errorName, textError) : a(this.state.errorName);
-        (this.state.cost.length == 0) ? a(this.state.errorCost, textError) : a(this.state.errorCost);
-        (this.state.quantity.length == 0) ? a(this.state.errorQuantity, textError) : a(this.state.errorQuantity);
-        (this.state.url.length == 0) ? a(this.state.errorURL, textError) : a(this.state.errorURL);
+        (this.state.name.length == 0) 
+        ? this.setState({errorName: textError, isValide: false}) 
+        : this.setState({errorName: ''});
+        (this.state.cost.length == 0) 
+        ? this.setState({errorCost: textError, isValide: false}) 
+        : this.setState({errorCost: ''});
+        (this.state.quantity.length == 0) 
+        ? this.setState({errorQuantity: textError, isValide: false}) 
+        : this.setState({errorQuantity: ''});
+        (this.state.url.length == 0) 
+        ? this.setState({errorURL: textError, isValide: false}) 
+        : this.setState({errorURL: ''});
         if(
-            this.state.errorName == null,
-            this.state.errorQuantity == null,
-            this.state.errorURL == null,
-            this.state.errorCost == null
+            !this.state.errorName,
+            !this.state.errorQuantity,
+            !this.state.errorURL,
+            !this.state.errorCost
         ) {
             this.setState({isValide: true});
             this.save();
         }
     }
-
-    validate=(eo)=>{
-        if(eo.target.value==0) {
-            this.setState({isValide: false});
-            eo.target.nextElementSibling.innerHTML='fill the field';
-        } else {
-            this.setState({isValide: true});
-        }
-    };
 
     render() {
         return (
@@ -79,7 +135,7 @@ class ProductCardEdit extends React.Component {
                         :'Create new product'
                     }
                 </div>
-                <div className='product-card_body'>
+                <div className='product-card__body'>
                     <div className='product-card__field'>
                         <span className='product-card__form-article'>ID:</span>{this.state.code}
                     </div>
@@ -88,7 +144,7 @@ class ProductCardEdit extends React.Component {
                         <input className='product-card__input' 
                             type='text' value={this.state.name} 
                             onChange={this.changeName} 
-                            onBlur={this.validate}
+                            onBlur={this.validateName}
                         />
                         <span className='product-card__error'>{this.state.errorName}</span>
                     </div>
@@ -97,7 +153,7 @@ class ProductCardEdit extends React.Component {
                         <input className='product-card__input' 
                             type='text' value={this.state.cost} 
                             onChange={this.changePrice} 
-                            onBlur={this.validate}
+                            onBlur={this.validatePrice}
                         />
                         <span className='product-card__error'>{this.state.errorCost}</span>
                     </div>
@@ -106,7 +162,7 @@ class ProductCardEdit extends React.Component {
                         <input className='product-card__input' 
                             type='text' value={this.state.url} 
                             onChange={this.changeURL} 
-                            onBlur={this.validate}
+                            onBlur={this.validateURL}
                         />
                         <span className='product-card__error'>{this.state.errorURL}</span>
                     </div>
@@ -115,7 +171,7 @@ class ProductCardEdit extends React.Component {
                         <input className='product-card__input' 
                             type='text' value={this.state.quantity} 
                             onChange={this.changeQuantity} 
-                            onBlur={this.validate}
+                            onBlur={this.validateQuantity}
                         />
                         <span className='product-card__error'>{this.state.errorQuantity}</span>
                     </div>

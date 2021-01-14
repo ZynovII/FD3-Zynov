@@ -30,6 +30,9 @@ class ShopTable extends React.Component {
 
     save = (product) => {
         let newProductList = this.state.productList.map(i => i.code == product.code ? product : i);
+        if(product.code !== newProductList.length) {
+            newProductList.push(product);
+        }
         this.setState({productList: newProductList, cardmode: 0, selectedItem: 0});
     };
     
@@ -44,8 +47,9 @@ class ShopTable extends React.Component {
                     cbEdit={this.edit}
                 />
             );
-        let selectedProduct = this.state.productList.find( i => i.code == this.state.selectedItem);
-        let newProductCode = this.props.list.length;
+        let selectedProduct = this.state.productList.find( i => i.code == this.state.selectedItem)
+        || {code: this.state.productList.length + 1, name: '', url: '', cost: '', quantity: ''};
+
         return (
             <div className='ProductListTable'>
                 <div className='Title'>
@@ -66,15 +70,19 @@ class ShopTable extends React.Component {
                 <input type='button' value='add new' onClick={this.add}/>
                 {
                     (this.state.cardmode == 1) &&
-                    <ProductCardView product={selectedProduct} cbCancel={this.cancel}/>
+                    <ProductCardView
+                        key={selectedProduct.code} 
+                        product={selectedProduct} 
+                        cbCancel={this.cancel}/>
                 }
                 {
                     (this.state.cardmode >= 2) &&
                     <ProductCardEdit 
-                        newCode={newProductCode}
+                        key={selectedProduct.code}
                         product={selectedProduct}
                         cardmode={this.state.cardmode}
                         cbSave={this.save}
+                        cbAdd={this.add}
                         cbCancel={this.cancel}
                       />
                 }

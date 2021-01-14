@@ -571,7 +571,7 @@ var _ShopTable2 = _interopRequireDefault(_ShopTable);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var productListArr = [{ name: 'fork', cost: 50, code: 1, quantity: 1000, url: 'img/fork.jpg' }, { name: 'table', cost: 1000, code: 2, quantity: 100, url: 'img/wooden-table.webp' }, { name: 'guitar', cost: 5000, code: 3, quantity: 10, url: 'img/guitar.jpg' }, { name: 'bottle', cost: 70, code: 4, quantity: 500, url: 'img/bottle.jpg' }, { name: 'lighter', cost: 40, code: 5, quantity: 4000, url: 'img/lighter.jpg' }];
+var productListArr = __webpack_require__(31);
 var shopTitle = 'IShop';
 
 _reactDom2.default.render(_react2.default.createElement(_ShopTable2.default, {
@@ -29257,6 +29257,9 @@ var ShopTable = function (_React$Component) {
             var newProductList = _this.state.productList.map(function (i) {
                 return i.code == product.code ? product : i;
             });
+            if (product.code !== newProductList.length) {
+                newProductList.push(product);
+            }
             _this.setState({ productList: newProductList, cardmode: 0, selectedItem: 0 });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -29277,8 +29280,8 @@ var ShopTable = function (_React$Component) {
             });
             var selectedProduct = this.state.productList.find(function (i) {
                 return i.code == _this2.state.selectedItem;
-            });
-            var newProductCode = this.props.list.length;
+            }) || { code: this.state.productList.length + 1, name: '', url: '', cost: '', quantity: '' };
+
             return _react2.default.createElement(
                 'div',
                 { className: 'ProductListTable' },
@@ -29326,12 +29329,16 @@ var ShopTable = function (_React$Component) {
                     )
                 ),
                 _react2.default.createElement('input', { type: 'button', value: 'add new', onClick: this.add }),
-                this.state.cardmode == 1 && _react2.default.createElement(_ProductCardView2.default, { product: selectedProduct, cbCancel: this.cancel }),
+                this.state.cardmode == 1 && _react2.default.createElement(_ProductCardView2.default, {
+                    key: selectedProduct.code,
+                    product: selectedProduct,
+                    cbCancel: this.cancel }),
                 this.state.cardmode >= 2 && _react2.default.createElement(_ProductCardEdit2.default, {
-                    newCode: newProductCode,
+                    key: selectedProduct.code,
                     product: selectedProduct,
                     cardmode: this.state.cardmode,
                     cbSave: this.save,
+                    cbAdd: this.add,
                     cbCancel: this.cancel
                 })
             );
@@ -30527,7 +30534,7 @@ var ProductCardEdit = function (_React$Component) {
             errorQuantity: null,
             errorCost: null,
             errorURL: null,
-            isValide: true
+            isValide: _this.props.cardmode == 2 ? true : false
         }, _this.changeName = function (eo) {
             return _this.setState({ name: eo.target.value });
         }, _this.changePrice = function (eo) {
@@ -30536,8 +30543,45 @@ var ProductCardEdit = function (_React$Component) {
             return _this.setState({ quantity: eo.target.value });
         }, _this.changeURL = function (eo) {
             return _this.setState({ url: eo.target.value });
+        }, _this.validateName = function () {
+            if (_this.state.name.length == 0) {
+                _this.setState({ errorName: 'fill the field', isValide: false });
+            } else {
+                _this.setState({ errorName: '' });
+            }
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+                _this.setState({ isValide: true });
+            }
+        }, _this.validatePrice = function () {
+            if (_this.state.cost.length == 0) {
+                _this.setState({ errorCost: 'fill the field', isValide: false });
+            } else {
+                _this.setState({ errorCost: '' });
+            }
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+                _this.setState({ isValide: true });
+            }
+        }, _this.validateQuantity = function () {
+            if (_this.state.quantity.length == 0) {
+                _this.setState({ errorQuantity: 'fill the field', isValide: false });
+            } else {
+                _this.setState({ errorQuantity: '' });
+            }
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+                _this.setState({ isValide: true });
+            }
+        }, _this.validateURL = function () {
+            if (_this.state.url.length == 0) {
+                _this.setState({ errorURL: 'fill the field', isValide: false });
+            } else {
+                _this.setState({ errorURL: '' });
+            }
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+                _this.setState({ isValide: true });
+            }
         }, _this.save = function () {
             return _this.props.cbSave(_extends({}, _this.props.product, {
+                code: _this.state.code,
                 name: _this.state.name,
                 cost: _this.state.cost,
                 quantity: _this.state.quantity,
@@ -30547,25 +30591,13 @@ var ProductCardEdit = function (_React$Component) {
             return _this.props.cbCancel();
         }, _this.validateAllFields = function () {
             var textError = 'fill the field';
-            var a = function a(field) {
-                var text = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
-
-                _this.setState({ field: text, isValide: false });
-            };
-            _this.state.name.length == 0 ? a(_this.state.errorName, textError) : a(_this.state.errorName);
-            _this.state.cost.length == 0 ? a(_this.state.errorCost, textError) : a(_this.state.errorCost);
-            _this.state.quantity.length == 0 ? a(_this.state.errorQuantity, textError) : a(_this.state.errorQuantity);
-            _this.state.url.length == 0 ? a(_this.state.errorURL, textError) : a(_this.state.errorURL);
-            if (_this.state.errorName == null, _this.state.errorQuantity == null, _this.state.errorURL == null, _this.state.errorCost == null) {
+            _this.state.name.length == 0 ? _this.setState({ errorName: textError, isValide: false }) : _this.setState({ errorName: '' });
+            _this.state.cost.length == 0 ? _this.setState({ errorCost: textError, isValide: false }) : _this.setState({ errorCost: '' });
+            _this.state.quantity.length == 0 ? _this.setState({ errorQuantity: textError, isValide: false }) : _this.setState({ errorQuantity: '' });
+            _this.state.url.length == 0 ? _this.setState({ errorURL: textError, isValide: false }) : _this.setState({ errorURL: '' });
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
                 _this.setState({ isValide: true });
                 _this.save();
-            }
-        }, _this.validate = function (eo) {
-            if (eo.target.value == 0) {
-                _this.setState({ isValide: false });
-                eo.target.nextElementSibling.innerHTML = 'fill the field';
-            } else {
-                _this.setState({ isValide: true });
             }
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
@@ -30583,7 +30615,7 @@ var ProductCardEdit = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'div',
-                    { className: 'product-card_body' },
+                    { className: 'product-card__body' },
                     _react2.default.createElement(
                         'div',
                         { className: 'product-card__field' },
@@ -30605,7 +30637,7 @@ var ProductCardEdit = function (_React$Component) {
                         _react2.default.createElement('input', { className: 'product-card__input',
                             type: 'text', value: this.state.name,
                             onChange: this.changeName,
-                            onBlur: this.validate
+                            onBlur: this.validateName
                         }),
                         _react2.default.createElement(
                             'span',
@@ -30624,7 +30656,7 @@ var ProductCardEdit = function (_React$Component) {
                         _react2.default.createElement('input', { className: 'product-card__input',
                             type: 'text', value: this.state.cost,
                             onChange: this.changePrice,
-                            onBlur: this.validate
+                            onBlur: this.validatePrice
                         }),
                         _react2.default.createElement(
                             'span',
@@ -30643,7 +30675,7 @@ var ProductCardEdit = function (_React$Component) {
                         _react2.default.createElement('input', { className: 'product-card__input',
                             type: 'text', value: this.state.url,
                             onChange: this.changeURL,
-                            onBlur: this.validate
+                            onBlur: this.validateURL
                         }),
                         _react2.default.createElement(
                             'span',
@@ -30662,7 +30694,7 @@ var ProductCardEdit = function (_React$Component) {
                         _react2.default.createElement('input', { className: 'product-card__input',
                             type: 'text', value: this.state.quantity,
                             onChange: this.changeQuantity,
-                            onBlur: this.validate
+                            onBlur: this.validateQuantity
                         }),
                         _react2.default.createElement(
                             'span',
@@ -30688,7 +30720,6 @@ var ProductCardEdit = function (_React$Component) {
 }(_react2.default.Component);
 
 ProductCardEdit.propTypes = {
-    newCode: _propTypes2.default.number,
     product: _propTypes2.default.object,
     cardmode: _propTypes2.default.number.isRequired,
     cbSave: _propTypes2.default.func.isRequired,
@@ -30701,6 +30732,12 @@ exports.default = ProductCardEdit;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 31 */
+/***/ (function(module, exports) {
+
+module.exports = [{"name":"fork","cost":50,"code":1,"quantity":1000,"url":"img/fork.jpg"},{"name":"table","cost":1000,"code":2,"quantity":100,"url":"img/wooden-table.webp"},{"name":"guitar","cost":5000,"code":3,"quantity":10,"url":"img/guitar.jpg"},{"name":"bottle","cost":70,"code":4,"quantity":500,"url":"img/bottle.jpg"},{"name":"lighter","cost":40,"code":5,"quantity":4000,"url":"img/lighter.jpg"}]
 
 /***/ })
 /******/ ]);
