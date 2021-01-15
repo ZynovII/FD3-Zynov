@@ -29239,6 +29239,7 @@ var ShopTable = function (_React$Component) {
         return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ShopTable.__proto__ || Object.getPrototypeOf(ShopTable)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
             productList: _this.props.list,
             selectedItem: 0,
+            isValid: true,
             cardmode: 0 //0-none, 1-view, 2-edit, 3-new
         }, _this.select = function (code) {
             return _this.setState({ cardmode: 1, selectedItem: code });
@@ -29257,10 +29258,12 @@ var ShopTable = function (_React$Component) {
             var newProductList = _this.state.productList.map(function (i) {
                 return i.code == product.code ? product : i;
             });
-            if (product.code !== newProductList.length) {
+            if (product.code !== _this.state.selectedItem) {
                 newProductList.push(product);
             }
-            _this.setState({ productList: newProductList, cardmode: 0, selectedItem: 0 });
+            _this.setState({ productList: newProductList, cardmode: 0 });
+        }, _this.setInValid = function (bool) {
+            return _this.setState({ isValid: bool });
         }, _temp), _possibleConstructorReturn(_this, _ret);
     }
 
@@ -29272,7 +29275,8 @@ var ShopTable = function (_React$Component) {
             var productListArr = this.state.productList.map(function (v) {
                 return _react2.default.createElement(_Product2.default, { key: v.code,
                     url: v.url, name: v.name,
-                    cost: v.cost, quantity: v.quantity, code: v.code,
+                    cost: v.cost, quantity: v.quantity,
+                    code: v.code, isAvailable: _this2.state.isValid,
                     selectedItem: _this2.state.selectedItem,
                     cbDelete: _this2.deleteProduct, cbSelect: _this2.select,
                     cbEdit: _this2.edit
@@ -29280,7 +29284,8 @@ var ShopTable = function (_React$Component) {
             });
             var selectedProduct = this.state.productList.find(function (i) {
                 return i.code == _this2.state.selectedItem;
-            }) || { code: this.state.productList.length + 1, name: '', url: '', cost: '', quantity: '' };
+            }) || { code: this.state.productList[this.state.productList.length - 1].code + 1,
+                name: '', url: '', cost: '', quantity: '' };
 
             return _react2.default.createElement(
                 'div',
@@ -29328,7 +29333,9 @@ var ShopTable = function (_React$Component) {
                         productListArr
                     )
                 ),
-                _react2.default.createElement('input', { type: 'button', value: 'add new', onClick: this.add }),
+                _react2.default.createElement('input', { type: 'button', value: 'add new',
+                    disabled: !this.state.isValid, onClick: this.add
+                }),
                 this.state.cardmode == 1 && _react2.default.createElement(_ProductCardView2.default, {
                     key: selectedProduct.code,
                     product: selectedProduct,
@@ -29337,6 +29344,7 @@ var ShopTable = function (_React$Component) {
                     key: selectedProduct.code,
                     product: selectedProduct,
                     cardmode: this.state.cardmode,
+                    cbSetValid: this.setInValid,
                     cbSave: this.save,
                     cbAdd: this.add,
                     cbCancel: this.cancel
@@ -30290,7 +30298,9 @@ var Product = function (_React$Component) {
             _this.props.cbDelete(_this.props.code);
             eo.stopPropagation();
         }, _this.select = function () {
-            return _this.props.cbSelect(_this.props.code);
+            if (_this.props.isAvailable) {
+                _this.props.cbSelect(_this.props.code);
+            }
         }, _this.edit = function (eo) {
             _this.props.cbEdit(_this.props.code);
             eo.stopPropagation();
@@ -30331,8 +30341,14 @@ var Product = function (_React$Component) {
                 _react2.default.createElement(
                     'td',
                     null,
-                    _react2.default.createElement('input', { type: 'button', value: 'EDIT', onClick: this.edit }),
-                    _react2.default.createElement('input', { type: 'button', value: 'DELETE', onClick: this.delete })
+                    _react2.default.createElement('input', { type: 'button',
+                        disabled: !this.props.isAvailable,
+                        value: 'EDIT', onClick: this.edit
+                    }),
+                    _react2.default.createElement('input', { type: 'button',
+                        disabled: !this.props.isAvailable,
+                        value: 'DELETE', onClick: this.delete
+                    })
                 )
             );
         }
@@ -30348,6 +30364,7 @@ Product.propTypes = {
     quantity: _propTypes2.default.number,
     cost: _propTypes2.default.number,
     selectedItem: _propTypes2.default.number,
+    isAvailable: _propTypes2.default.bool,
     cbSelect: _propTypes2.default.func,
     cbDelete: _propTypes2.default.func,
     cbEdit: _propTypes2.default.func
@@ -30536,57 +30553,58 @@ var ProductCardEdit = function (_React$Component) {
             errorURL: null,
             isValide: _this.props.cardmode == 2 ? true : false
         }, _this.changeName = function (eo) {
-            return _this.setState({ name: eo.target.value });
+            _this.props.cbSetValid(false);
+            _this.setState({ name: eo.target.value });
         }, _this.changePrice = function (eo) {
-            return _this.setState({ cost: eo.target.value });
+            _this.props.cbSetValid(false);
+            _this.setState({ cost: eo.target.value });
         }, _this.changeQuantity = function (eo) {
-            return _this.setState({ quantity: eo.target.value });
+            _this.props.cbSetValid(false);
+            _this.setState({ quantity: eo.target.value });
         }, _this.changeURL = function (eo) {
-            return _this.setState({ url: eo.target.value });
+            _this.props.cbSetValid(false);
+            _this.setState({ url: eo.target.value });
+        }, _this._setValide = function () {
+            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+                _this.setState({ isValide: true });
+            }
         }, _this.validateName = function () {
             if (_this.state.name.length == 0) {
                 _this.setState({ errorName: 'fill the field', isValide: false });
             } else {
                 _this.setState({ errorName: '' });
             }
-            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
-                _this.setState({ isValide: true });
-            }
+            _this._setValide();
         }, _this.validatePrice = function () {
             if (_this.state.cost.length == 0) {
                 _this.setState({ errorCost: 'fill the field', isValide: false });
             } else {
                 _this.setState({ errorCost: '' });
             }
-            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
-                _this.setState({ isValide: true });
-            }
+            _this._setValide();
         }, _this.validateQuantity = function () {
             if (_this.state.quantity.length == 0) {
                 _this.setState({ errorQuantity: 'fill the field', isValide: false });
             } else {
                 _this.setState({ errorQuantity: '' });
             }
-            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
-                _this.setState({ isValide: true });
-            }
+            _this._setValide();
         }, _this.validateURL = function () {
             if (_this.state.url.length == 0) {
                 _this.setState({ errorURL: 'fill the field', isValide: false });
             } else {
                 _this.setState({ errorURL: '' });
             }
-            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
-                _this.setState({ isValide: true });
-            }
+            _this._setValide();
         }, _this.save = function () {
-            return _this.props.cbSave(_extends({}, _this.props.product, {
+            _this.props.cbSave(_extends({}, _this.props.product, {
                 code: _this.state.code,
                 name: _this.state.name,
                 cost: _this.state.cost,
                 quantity: _this.state.quantity,
                 url: _this.state.url
             }));
+            _this.props.cbSetValid(true);
         }, _this.cancel = function () {
             return _this.props.cbCancel();
         }, _this.validateAllFields = function () {
@@ -30723,7 +30741,8 @@ ProductCardEdit.propTypes = {
     product: _propTypes2.default.object,
     cardmode: _propTypes2.default.number.isRequired,
     cbSave: _propTypes2.default.func.isRequired,
-    cbCancel: _propTypes2.default.func.isRequired
+    cbCancel: _propTypes2.default.func.isRequired,
+    cbSetValid: _propTypes2.default.func.isRequired
 };
 exports.default = ProductCardEdit;
 
