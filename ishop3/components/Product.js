@@ -13,6 +13,7 @@ class Product extends React.Component {
         quantity: PropTypes.number,
         cost: PropTypes.number,
         selectedItem: PropTypes.number,
+        isAvailable: PropTypes.bool,
         cbSelect: PropTypes.func,
         cbDelete: PropTypes.func,
         cbEdit: PropTypes.func,
@@ -22,7 +23,11 @@ class Product extends React.Component {
         this.props.cbDelete(this.props.code);
         eo.stopPropagation();
     }
-    select = () => this.props.cbSelect(this.props.code);
+    select = () => {
+        if(this.props.isAvailable){
+            this.props.cbSelect(this.props.code);
+        }
+    }
     edit = (eo) => {
         this.props.cbEdit(this.props.code);
         eo.stopPropagation();
@@ -42,8 +47,14 @@ class Product extends React.Component {
                 <td>{this.props.quantity} left</td>
                 <td>{this.props.cost} eurodollars</td>
                 <td>
-                    <input type='button' value='EDIT' onClick={this.edit}/>
-                    <input type='button' value='DELETE' onClick={this.delete}/>
+                    <input type='button' 
+                        disabled={!this.props.isAvailable} 
+                        value='EDIT' onClick={this.edit}
+                    />
+                    <input type='button' 
+                        disabled={!this.props.isAvailable} 
+                        value='DELETE' onClick={this.delete}
+                    />
                 </td>
             </tr>
         );

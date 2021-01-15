@@ -9,6 +9,7 @@ class ProductCardEdit extends React.Component {
         cardmode: PropTypes.number.isRequired,
         cbSave: PropTypes.func.isRequired,
         cbCancel: PropTypes.func.isRequired,
+        cbSetValid: PropTypes.func.isRequired,
     };
     state = {
         name: this.props.product.name,
@@ -23,16 +24,24 @@ class ProductCardEdit extends React.Component {
         isValide: this.props.cardmode == 2 ? true : false,
     };
 
-    changeName = (eo) => this.setState({name: eo.target.value});
-    changePrice = (eo) => this.setState({cost: eo.target.value});
-    changeQuantity = (eo) => this.setState({quantity: eo.target.value});
-    changeURL = (eo) => this.setState({url: eo.target.value});
-    validateName = () => {
-        if(this.state.name.length == 0) {
-            this.setState({errorName: 'fill the field', isValide: false});
-        } else {
-            this.setState({errorName: ''})
-        }
+    changeName = (eo) => {
+        this.props.cbSetValid(false);
+        this.setState({name: eo.target.value});
+    }
+    changePrice = (eo) => {
+        this.props.cbSetValid(false);
+        this.setState({cost: eo.target.value});
+    }
+    changeQuantity = (eo) => {
+        this.props.cbSetValid(false);
+        this.setState({quantity: eo.target.value});
+    }
+    changeURL = (eo) => {
+        this.props.cbSetValid(false);
+        this.setState({url: eo.target.value});
+    }
+
+    _setValide = () => {
         if(
             !this.state.errorName,
             !this.state.errorQuantity,
@@ -41,6 +50,14 @@ class ProductCardEdit extends React.Component {
         ) {
             this.setState({isValide: true});
         }
+    }
+    validateName = () => {
+        if(this.state.name.length == 0) {
+            this.setState({errorName: 'fill the field', isValide: false});
+        } else {
+            this.setState({errorName: ''})
+        }
+        this._setValide();
     }
     validatePrice = () => {
         if(this.state.cost.length == 0) {
@@ -48,14 +65,7 @@ class ProductCardEdit extends React.Component {
         } else {
             this.setState({errorCost: ''})
         }
-        if(
-            !this.state.errorName,
-            !this.state.errorQuantity,
-            !this.state.errorURL,
-            !this.state.errorCost
-        ) {
-            this.setState({isValide: true});
-        }
+        this._setValide();
     }
     validateQuantity = () => {
         if(this.state.quantity.length == 0) {
@@ -63,14 +73,7 @@ class ProductCardEdit extends React.Component {
         } else {
             this.setState({errorQuantity: ''})
         }
-        if(
-            !this.state.errorName,
-            !this.state.errorQuantity,
-            !this.state.errorURL,
-            !this.state.errorCost
-        ) {
-            this.setState({isValide: true});
-        }
+        this._setValide();
     }
     validateURL = () => {
         if(this.state.url.length == 0) {
@@ -78,26 +81,22 @@ class ProductCardEdit extends React.Component {
         } else {
             this.setState({errorURL: ''})
         }
-        if(
-            !this.state.errorName,
-            !this.state.errorQuantity,
-            !this.state.errorURL,
-            !this.state.errorCost
-        ) {
-            this.setState({isValide: true});
-        }
+        this._setValide();
     }
 
-    save = () => this.props.cbSave(
-        {
-            ...this.props.product,
-            code: this.state.code, 
-            name: this.state.name,
-            cost: this.state.cost,
-            quantity: this.state.quantity,
-            url: this.state.url,
-        }
-    );
+    save = () => {
+        this.props.cbSave(
+            {
+                ...this.props.product,
+                code: this.state.code, 
+                name: this.state.name,
+                cost: this.state.cost,
+                quantity: this.state.quantity,
+                url: this.state.url,
+            }
+        );
+        this.props.cbSetValid(true);
+    }
     cancel=()=>this.props.cbCancel();
     
     validateAllFields = () => {

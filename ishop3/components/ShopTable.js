@@ -15,6 +15,7 @@ class ShopTable extends React.Component {
     state = {
         productList: this.props.list,
         selectedItem: 0,
+        isValid: true,
         cardmode: 0, //0-none, 1-view, 2-edit, 3-new
     };
 
@@ -30,25 +31,29 @@ class ShopTable extends React.Component {
 
     save = (product) => {
         let newProductList = this.state.productList.map(i => i.code == product.code ? product : i);
-        if(product.code !== newProductList.length) {
+        if(product.code !== this.state.selectedItem) {
             newProductList.push(product);
         }
-        this.setState({productList: newProductList, cardmode: 0, selectedItem: 0});
+        this.setState({productList: newProductList, cardmode: 0});
     };
+
+    setInValid = (bool) => this.setState( {isValid: bool} );
     
 
     render() {
         var productListArr = this.state.productList.map( v =>
                 <Product key={v.code}
                     url={v.url} name={v.name}
-                    cost={v.cost} quantity={v.quantity} code={v.code}
+                    cost={v.cost} quantity={v.quantity} 
+                    code={v.code} isAvailable={this.state.isValid}
                     selectedItem={this.state.selectedItem}
                     cbDelete={this.deleteProduct} cbSelect={this.select}
                     cbEdit={this.edit}
                 />
             );
         let selectedProduct = this.state.productList.find( i => i.code == this.state.selectedItem)
-        || {code: this.state.productList.length + 1, name: '', url: '', cost: '', quantity: ''};
+        || {code: this.state.productList[this.state.productList.length-1].code + 1, 
+            name: '', url: '', cost: '', quantity: ''};
 
         return (
             <div className='ProductListTable'>
@@ -67,7 +72,9 @@ class ShopTable extends React.Component {
                         {productListArr}
                     </tbody>
                 </table>
-                <input type='button' value='add new' onClick={this.add}/>
+                <input type='button' value='add new' 
+                    disabled={!this.state.isValid} onClick={this.add}
+                />
                 {
                     (this.state.cardmode == 1) &&
                     <ProductCardView
@@ -81,6 +88,7 @@ class ShopTable extends React.Component {
                         key={selectedProduct.code}
                         product={selectedProduct}
                         cardmode={this.state.cardmode}
+                        cbSetValid={this.setInValid}
                         cbSave={this.save}
                         cbAdd={this.add}
                         cbCancel={this.cancel}
