@@ -22,7 +22,7 @@ class ShopTable extends React.Component {
     select = (code) => this.setState( {cardmode: 1, selectedItem: code} );
     edit = (code) => this.setState({cardmode: 2, selectedItem: code});
     add = () => this.setState({cardmode: 3, selectedItem: 0});
-    cancel= () => this.setState({cardmode: 0, selectedItem: 0});
+    cancel= () => this.setState({cardmode: 0, selectedItem: 0, isValid: true});
 
     deleteProduct = (code) => {
         let newList = this.state.productList.filter(v => v.code!==code);

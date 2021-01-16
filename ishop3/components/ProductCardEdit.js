@@ -43,10 +43,10 @@ class ProductCardEdit extends React.Component {
 
     _setValide = () => {
         if(
-            !this.state.errorName,
-            !this.state.errorQuantity,
-            !this.state.errorURL,
-            !this.state.errorCost
+            this.state.name&&
+            this.state.quantity&&
+            this.state.url&&
+            this.state.cost
         ) {
             this.setState({isValide: true});
         }

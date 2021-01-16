@@ -29248,7 +29248,7 @@ var ShopTable = function (_React$Component) {
         }, _this.add = function () {
             return _this.setState({ cardmode: 3, selectedItem: 0 });
         }, _this.cancel = function () {
-            return _this.setState({ cardmode: 0, selectedItem: 0 });
+            return _this.setState({ cardmode: 0, selectedItem: 0, isValid: true });
         }, _this.deleteProduct = function (code) {
             var newList = _this.state.productList.filter(function (v) {
                 return v.code !== code;
@@ -30565,7 +30565,7 @@ var ProductCardEdit = function (_React$Component) {
             _this.props.cbSetValid(false);
             _this.setState({ url: eo.target.value });
         }, _this._setValide = function () {
-            if (!_this.state.errorName, !_this.state.errorQuantity, !_this.state.errorURL, !_this.state.errorCost) {
+            if (_this.state.name && _this.state.quantity && _this.state.url && _this.state.cost) {
                 _this.setState({ isValide: true });
             }
         }, _this.validateName = function () {
