@@ -505,7 +505,11 @@ var _reactDom = __webpack_require__(9);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
-var _withRainbowFrame = __webpack_require__(17);
+var _DoubleButton = __webpack_require__(17);
+
+var _DoubleButton2 = _interopRequireDefault(_DoubleButton);
+
+var _withRainbowFrame = __webpack_require__(18);
 
 var _withRainbowFrame2 = _interopRequireDefault(_withRainbowFrame);
 
@@ -513,15 +517,33 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var rainbow = ['red', 'orange', 'yellow', 'green', 'skyblue', 'blue', 'purple'];
 
-var ComponentWithRainbowFarme = (0, _withRainbowFrame2.default)(rainbow);
+var ComponentWithRainbowFarme = (0, _withRainbowFrame2.default)(rainbow)(_DoubleButton2.default);
 
 _reactDom2.default.render(_react2.default.createElement(
-    ComponentWithRainbowFarme,
+    _react.Fragment,
     null,
     _react2.default.createElement(
-        'span',
-        { style: { fontWeight: 600 } },
-        'Hello!'
+        _DoubleButton2.default,
+        { caption1: '\u043E\u0434\u043D\u0430\u0436\u0434\u044B', caption2: '\u043F\u043E\u0440\u0443',
+            cbPressed: function cbPressed(num) {
+                return alert(num);
+            }
+        },
+        '\u0432 \u0441\u0442\u0443\u0434\u0451\u043D\u0443\u044E \u0437\u0438\u043C\u043D\u044E\u044E'
+    ),
+    _react2.default.createElement('br', null),
+    _react2.default.createElement('br', null),
+    _react2.default.createElement(
+        ComponentWithRainbowFarme,
+        { caption1: 'rainbow say:',
+            caption2: 'World!', cbPressed: function cbPressed(num) {
+                return alert(num);
+            } },
+        _react2.default.createElement(
+            'span',
+            { style: { fontWeight: 600 } },
+            'Hello'
+        )
     )
 ), document.getElementById('container'));
 
@@ -29155,34 +29177,104 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-__webpack_require__(18);
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var DoubleButton = function (_React$Component) {
+    _inherits(DoubleButton, _React$Component);
+
+    function DoubleButton() {
+        var _ref;
+
+        var _temp, _this, _ret;
+
+        _classCallCheck(this, DoubleButton);
+
+        for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+            args[_key] = arguments[_key];
+        }
+
+        return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = DoubleButton.__proto__ || Object.getPrototypeOf(DoubleButton)).call.apply(_ref, [this].concat(args))), _this), _this.firstButton = function () {
+            _this.props.cbPressed(1);
+        }, _this.secondButton = function () {
+            _this.props.cbPressed(2);
+        }, _temp), _possibleConstructorReturn(_this, _ret);
+    }
+
+    _createClass(DoubleButton, [{
+        key: 'render',
+        value: function render() {
+            return _react2.default.createElement(
+                _react.Fragment,
+                null,
+                _react2.default.createElement('input', { type: 'button', value: this.props.caption1,
+                    onClick: this.firstButton
+                }),
+                this.props.children,
+                _react2.default.createElement('input', { type: 'button', value: this.props.caption2,
+                    onClick: this.secondButton
+                })
+            );
+        }
+    }]);
+
+    return DoubleButton;
+}(_react2.default.Component);
+
+exports.default = DoubleButton;
+
+/***/ }),
+/* 18 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+__webpack_require__(19);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var withRainbowFrame = function withRainbowFrame(colors) {
-    return function (props) {
-        var recursion = function recursion(i) {
-            if (!colors[i]) {
-                return props.children;
-            }
-            return _react2.default.createElement(
-                'div',
-                { key: i, style: { border: '5px solid ' + colors[i], padding: '5px' } },
-                recursion(i + 1)
-            );
+    return function (Component) {
+        return function (props) {
+            var recursion = function recursion(i) {
+                if (!colors[i]) {
+                    return _react2.default.createElement(Component, props);
+                }
+                return _react2.default.createElement(
+                    'div',
+                    { key: i, style: { border: '5px solid ' + colors[i], padding: '5px' } },
+                    recursion(i + 1)
+                );
+            };
+            return recursion(0);
         };
-        return recursion(0);
     };
 };
 
 exports.default = withRainbowFrame;
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

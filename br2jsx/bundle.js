@@ -29157,7 +29157,7 @@ exports.default = function (props) {
     var newText = props.text.split(/<br\s*\/?>/);
     var brText = [];
     newText.forEach(function (v, i) {
-        if (i) brText.push(_react2.default.createElement('br', null));
+        if (i) brText.push(_react2.default.createElement('br', { key: i }));
         brText.push(v);
     });
     return _react2.default.createElement(

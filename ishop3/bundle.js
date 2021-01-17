@@ -30555,15 +30555,19 @@ var ProductCardEdit = function (_React$Component) {
         }, _this.changeName = function (eo) {
             _this.props.cbSetValid(false);
             _this.setState({ name: eo.target.value });
+            _this._setValide();
         }, _this.changePrice = function (eo) {
             _this.props.cbSetValid(false);
-            _this.setState({ cost: eo.target.value });
+            _this.setState({ cost: parseFloat(eo.target.value) });
+            _this._setValide();
         }, _this.changeQuantity = function (eo) {
             _this.props.cbSetValid(false);
-            _this.setState({ quantity: eo.target.value });
+            _this.setState({ quantity: parseFloat(eo.target.value) });
+            _this._setValide();
         }, _this.changeURL = function (eo) {
             _this.props.cbSetValid(false);
             _this.setState({ url: eo.target.value });
+            _this._setValide();
         }, _this._setValide = function () {
             if (_this.state.name && _this.state.quantity && _this.state.url && _this.state.cost) {
                 _this.setState({ isValide: true });

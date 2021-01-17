@@ -27,18 +27,22 @@ class ProductCardEdit extends React.Component {
     changeName = (eo) => {
         this.props.cbSetValid(false);
         this.setState({name: eo.target.value});
+        this._setValide();
     }
     changePrice = (eo) => {
         this.props.cbSetValid(false);
-        this.setState({cost: eo.target.value});
+        this.setState({cost: parseFloat(eo.target.value)});
+        this._setValide();
     }
     changeQuantity = (eo) => {
         this.props.cbSetValid(false);
-        this.setState({quantity: eo.target.value});
+        this.setState({quantity: parseFloat(eo.target.value)});
+        this._setValide();
     }
     changeURL = (eo) => {
         this.props.cbSetValid(false);
         this.setState({url: eo.target.value});
+        this._setValide();
     }
 
     _setValide = () => {

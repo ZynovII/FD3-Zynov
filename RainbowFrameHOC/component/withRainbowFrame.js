@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import './RainbowFrame.css';
 
-let withRainbowFrame = (colors) => (props) => {
+let withRainbowFrame = (colors) => (Component) => (props) => {
     let recursion = (i) => {
         if(!colors[i]) {
-            return props.children;
+            return <Component {...props}/>;
         }
         return  <div key={i} style={{border: '5px solid '+colors[i], padding: '5px'}}>
                     {recursion(i+1)}
