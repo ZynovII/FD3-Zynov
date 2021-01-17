@@ -3,5 +3,11 @@ import React from 'react';
 import './Br2jsx.css';
 
 export default (props) => {
-    return <div>{props.text}</div>
+    let newText = props.text.split(/<br\s*\/?>/);
+    let brText = [];
+    newText.forEach( (v,i) => {
+        if(i) brText.push(<br/>);
+        brText.push(v);
+    });
+    return <div>{brText}</div>
 };

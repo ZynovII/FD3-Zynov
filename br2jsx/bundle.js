@@ -29154,10 +29154,16 @@ __webpack_require__(18);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = function (props) {
+    var newText = props.text.split(/<br\s*\/?>/);
+    var brText = [];
+    newText.forEach(function (v, i) {
+        if (i) brText.push(_react2.default.createElement('br', null));
+        brText.push(v);
+    });
     return _react2.default.createElement(
         'div',
         null,
-        props.text
+        brText
     );
 };
 
