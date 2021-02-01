@@ -1,0 +1,18 @@
+@import '_main';
+
+.client-row {
+    border-top: 1px solid $mainColor;
+    td {
+        padding: 10px;
+        padding-right: 40px;
+        &:last-child{
+            padding-right: 10px;
+        }
+    }
+    .active{
+        background: $activeColor;
+    }
+    .blocked{
+        background-color: $blockedColor;
+    }
+}

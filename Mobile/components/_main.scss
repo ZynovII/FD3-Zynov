@@ -1,0 +1,10 @@
+$mainColor: rgb(160, 160, 233);
+$blockedColor: red;
+$activeColor: rgb(0, 190, 0);
+$fontSize: 25px;
+$fontWeight: 600;
+
+%tplBtn {
+    font-size: 18px;
+    padding: 5px;
+}

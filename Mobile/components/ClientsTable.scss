@@ -1,0 +1,10 @@
+@import '_main';
+
+.clients-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    .table__head{
+        border: 1px solid $mainColor 0;
+        font-weight: $fontWeight;
+    }
+}

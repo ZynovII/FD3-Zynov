@@ -1,0 +1,18 @@
+﻿@import '_main';
+
+.mobile-company {
+  font-size: $fontSize;
+  .loading{
+    font-size: 40px;
+    font-weight: 600;
+    animation: 4s linear 0s infinite alternate loading;
+  }
+  button {
+    @extend %tplBtn;
+  }
+}
+
+@keyframes loading {
+  from {color: black;}
+  to {color: seagreen};
+}

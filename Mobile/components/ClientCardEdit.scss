@@ -1,0 +1,21 @@
+@import '_main';
+
+.client-card {
+    position: fixed;
+    right: 40px;
+    top: 180px;
+    padding: 5px;
+    text-align: left;
+    border: 1px solid $mainColor;
+}
+.client-card__field {
+    position: relative;
+    padding-left: 130px;
+}
+.client-card__form-article {
+    position: absolute;
+    left: 0;
+}
+.client-card__input {
+    font-size: $fontSize - 5;
+}
