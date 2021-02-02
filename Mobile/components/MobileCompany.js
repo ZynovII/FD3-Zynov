@@ -45,7 +45,7 @@ class MobileCompany extends React.PureComponent {
 
   deliteClient = (id) => {
     let newClientsArr = this.state.clientsArr.filter( v => v.id != id);
-    this.setState({clientsArr: newClientsArr});
+    this.setState({clientsArr: newClientsArr, selectedClient: null, cardmode: 0});
   }
 
   editClient = (id) => {
@@ -80,7 +80,7 @@ class MobileCompany extends React.PureComponent {
 
   render() {
     if(this.state.dataReady) {
-      let newClientId = this.state.clientsArr.length + 1;
+      let newClientId = this.state.clientsArr[this.state.clientsArr.length-1].id + 1;
       var selectedClient = this.state.clientsArr.find( (v) => v.id === this.state.selectedClient ) ||
       {id: newClientId};
     }
@@ -94,6 +94,14 @@ class MobileCompany extends React.PureComponent {
         <button onClick={this.showBlockedClients}>Blocked</button>
         <hr />
         {
+          this.state.cardmode !==0 && 
+          <ClientCardEdit 
+              key={selectedClient.id}
+              client={selectedClient}
+              cardmode={this.state.cardmode}
+          />
+        }
+        {
           !this.state.dataReady 
           ? <div className='loading'>Data loading...</div>
           : [
@@ -103,14 +111,6 @@ class MobileCompany extends React.PureComponent {
               />,
               <button key={'b'} onClick={this.addNewClient}>Add client</button>
             ]
-        }
-        {
-          this.state.cardmode !==0 && 
-          <ClientCardEdit 
-              key={selectedClient.id}
-              client={selectedClient}
-              cardmode={this.state.cardmode}
-          />
         }
       </div>
     );
