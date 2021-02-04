@@ -76,11 +76,16 @@ class ClientCardEdit extends React.PureComponent {
         this._setValide();
     }
     
+    saveEmitter = (clientHash) => {
+        EditTableEvents.emit('ESaveChanges', clientHash);
+        EditTableEvents.emit('ESetValid', true);
+    }
+    
     cancel=()=>EditTableEvents.emit('ECancelChanges');
 
     save = () => {
         let newStatus = this.balanceRef.value > 0 ? 'active' : 'blocked';
-        EditTableEvents.emit('ESaveChanges',
+        let newClient = 
             {
                 ...this.props.client, 
                 firstName: this.firstNameRef.value,
@@ -88,9 +93,8 @@ class ClientCardEdit extends React.PureComponent {
                 patronymic: this.patronymicRef.value,
                 balance: this.balanceRef.value,
                 status: newStatus
-            }
-        );
-        EditTableEvents.emit('ESetValid', true);
+            };
+        this.saveEmitter(newClient);
     }
     
     validateAllFields = () => {

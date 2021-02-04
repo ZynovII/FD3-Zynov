@@ -26,8 +26,8 @@ class User extends React.PureComponent {
                 <td>{userData.patronymic}</td>
                 <td>{userData.balance}</td>
                 <td className={userData.status == 'active' ? 'active' : 'blocked'}>{userData.status}</td>
-                <td><button onClick={this.edit}>Edit</button></td>
-                <td><button onClick={this.delite}>Delite</button></td>
+                <td><button dataTestId={'edit'+userData.id} onClick={this.edit}>Edit</button></td>
+                <td><button dataTestId={'delite'+userData.id} onClick={this.delite}>Delite</button></td>
             </tr>
         );
     }

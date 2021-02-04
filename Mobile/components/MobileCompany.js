@@ -7,11 +7,13 @@ import ClientCardEdit from './ClientCardEdit';
 
 import './MobileCompany.scss';
 
+const fetch = typeof window !== 'undefined' ? window.fetch : require('node-fetch');
+
 class MobileCompany extends React.PureComponent {
 
   state = {
-    dataReady: false,
-    clientsArr : null,
+    dataReady: true,
+    clientsArr : this.props.clientsArr,
     filteredClientsArr: null,
     filterMode: 0, //0-standart view, 1-when it filtered
     companyes : ['Velcom', 'MTS'],
@@ -26,7 +28,7 @@ class MobileCompany extends React.PureComponent {
       EditTableEvents.addListener('ESetValid', this.setValid);
       EditTableEvents.addListener('ESaveChanges', this.saveClientChanges);
       EditTableEvents.addListener('ECancelChanges', this.cancelChanges);
-      this.loadData();
+      //this.loadData();
   };
 
   componentWillUnmount = () => {
@@ -89,9 +91,9 @@ class MobileCompany extends React.PureComponent {
       <div className='mobile-company'>
         <CompanyTitle companyes={this.state.companyes}/>
         <hr />
-        <button onClick={this.showAllClients}>All</button>
-        <button onClick={this.showActiveClients}>Active</button>
-        <button onClick={this.showBlockedClients}>Blocked</button>
+        <button dataTestId='filterAll' onClick={this.showAllClients}>All</button>
+        <button dataTestId='filterActiv' onClick={this.showActiveClients}>Active</button>
+        <button dataTestId='filterBlock' onClick={this.showBlockedClients}>Blocked</button>
         <hr />
         {
           this.state.cardmode !==0 && 
@@ -109,7 +111,7 @@ class MobileCompany extends React.PureComponent {
                 ? this.state.clientsArr 
                 : this.state.filteredClientsArr }
               />,
-              <button key={'b'} onClick={this.addNewClient}>Add client</button>
+              <button dataTestId='add' key={'b'} onClick={this.addNewClient}>Add client</button>
             ]
         }
       </div>
