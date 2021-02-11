@@ -1,6 +1,6 @@
 class Scales {
 
-    productArr:Array<object>;
+    productArr:Array<Product>;
     
     constructor(){
         this.productArr = [];
