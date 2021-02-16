@@ -1,7 +1,7 @@
 localStorage.clear();
-function uniFactory<objtype>(classRef: { new (): objtype; }): objtype {
-    return new classRef();
-}
+// function uniFactory<objtype>(classRef: { new (): objtype; }): objtype {
+//     return new classRef();
+// }
 
 interface IStorageEngine {
     addItem(item:Product):void;
@@ -12,6 +12,8 @@ interface IStorageEngine {
 class Scales<StorageEngine extends IStorageEngine> {
 
     storageEngineObj:IStorageEngine = null;
+
+    // storageEngineObj:IStorageEngine = uniFactory<StorageEngine>(StorageEngine);
 
     constructor( _storageEngin:IStorageEngine ) {
         this.storageEngineObj = _storageEngin;
