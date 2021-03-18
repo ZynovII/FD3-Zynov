@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'sprite',
@@ -18,5 +18,7 @@ export class SpriteComponent {
   @Input('heigth')
   height!:number;
 
+  @Output('clicked')
+  _clickOutputEE = new EventEmitter<void>();
 
 }
