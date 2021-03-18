@@ -1,0 +1,11 @@
+<h1>{{title}}{{counter}}</h1>
+<div class='sprite-host'>
+  <sprite 
+    [offset-x]="getOffsetX()" 
+    [offset-y]="getOffsetY()"
+    [width]='getWidth()'
+    [heigth]='getHeight()'
+    [url]='getURL()'
+    (click)='setImage()'
+  ></sprite> 
+</div>
